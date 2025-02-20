@@ -39,10 +39,45 @@ document.addEventListener("DOMContentLoaded", function () {
         users.forEach(user => {
             const userDiv = document.createElement("div");
             userDiv.classList.add("users-container-card");
-            userDiv.innerHTML = `<div class="card-name">${user.username} - <span class="user-vote">?</span></div>`;
+    
+            userDiv.innerHTML = `
+                <div class="user-card">
+                    <div class="vote-card">
+                        <span class="user-vote">?</span>
+                        <i class="fa fa-edit vote-icon d-none"></i>
+                    </div>
+                    <div class="username">${user.username}</div>
+                </div>
+            `;
             usersList.appendChild(userDiv);
         });
+
+        // <i class="fa fa-check vote-icon d-none" data-username="${user.username}"></i>
+        // document.querySelectorAll(".vote-icon").forEach(icon => {
+        //     icon.addEventListener("click", function () {
+        //         if (this.dataset.username === currentUser) {
+        //             changeVote();
+        //         }
+        //     });
+        // });
     }
+
+    // function changeVote() {
+    //     if (!selectedCard) return;
+    
+    //     selectedCard.classList.remove("selected");
+    //     selectedCard = null;
+    //     selectedValue = null;
+        
+    //     startVotingContainer.innerHTML = `<div class="pick-text">Pick your cards!</div>`;
+    //     socket.emit("vote", "?");
+    
+    //     document.querySelectorAll(".vote-icon").forEach(icon => {
+    //         if (icon.dataset.username === currentUser) {
+    //             icon.classList.add("d-none");
+    //         }
+    //     });
+    // }
 
     socket.on("usernameTaken", (username) => {
         alert(`The username "${username}" is already taken. Please choose another.`);
@@ -109,7 +144,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let average = count > 0 ? (total / count).toFixed(2) : "N/A";
             displayAverage(average);
-    
+
+            document.querySelectorAll(".vote-icon").forEach(icon => {
+                icon.classList.remove("d-none");
+            });
+
             startVotingContainer.innerHTML = `<button id="startNewVoting" class="btn btn-primary start-voting-btn">Start New Voting</button>`;
             document.getElementById("startNewVoting").addEventListener("click", function () {
                 clearAll();
@@ -152,6 +191,10 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => (resetCooldown = false), 5000);
     
         socket.emit("reset");
+
+        document.querySelectorAll(".vote-icon").forEach(icon => {
+            icon.classList.add("d-none");
+        });
     }    
 
     socket.on("resetUI", () => {

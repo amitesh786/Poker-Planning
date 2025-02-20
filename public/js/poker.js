@@ -12,6 +12,26 @@ document.addEventListener("DOMContentLoaded", function () {
     let selectedValue = null;
     let currentUser = null;
 
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+        socket.emit("reconnectUser", storedUsername);
+        loginSection.classList.add("d-none");
+        gameSection.classList.remove("d-none");
+        cardSection.classList.remove("d-none");
+        document.getElementById("navbar").classList.remove("d-none");
+        document.getElementById("navUsername").innerText = storedUsername;
+        currentUser = storedUsername;
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", function () {
+        localStorage.removeItem("username");
+        document.getElementById("navbar").classList.add("d-none");
+        loginSection.classList.remove("d-none");
+        gameSection.classList.add("d-none");
+        cardSection.classList.add("d-none");
+        socket.emit("disconnect");
+    });
+
     startVotingContainer.innerHTML = `<div class="pick-text">Pick your cards!</div>`;
 
     function updateUserList(users) {
@@ -29,19 +49,18 @@ document.addEventListener("DOMContentLoaded", function () {
         usernameInput.value = "";
     });
 
-    socket.on("errorMessage", (message) => {
-        alert(message);
-    });
-
     joinBtn.addEventListener("click", function (event) {
         event.preventDefault();
         const username = usernameInput.value.trim();
         if (username !== "") {
             currentUser = username;
+            localStorage.setItem("username", username);
             socket.emit("join", username);
             loginSection.classList.add("d-none");
             gameSection.classList.remove("d-none");
             cardSection.classList.remove("d-none");
+            document.getElementById("navbar").classList.remove("d-none");
+            document.getElementById("navUsername").innerText = username;
         } else {
             alert("Please enter your name to join.");
         }
@@ -56,15 +75,12 @@ document.addEventListener("DOMContentLoaded", function () {
             socket.emit("vote", "?");
             return;
         }
-
         if (selectedCard) {
             selectedCard.classList.remove("selected");
         }
-
         selectedCard = cardElement;
         selectedValue = value;
         selectedCard.classList.add("selected");
-
         socket.emit("vote", value);
 
         startVotingContainer.innerHTML = `<button id="startVoting-id" class="btn btn-primary start-voting-btn">Reveal cards</button>`;
@@ -77,7 +93,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".user-vote").forEach((vote) => {
             vote.innerText = "⌛";
         });
-    
         setTimeout(() => {
             let total = 0;
             let count = 0;
@@ -99,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("startNewVoting").addEventListener("click", function () {
                 clearAll();
             });
-        }, 3000);
+        }, 1000);
     });
 
     function displayAverage(avg) {
@@ -109,10 +124,11 @@ document.addEventListener("DOMContentLoaded", function () {
             avgContainer.id = "averageContainer";
             avgContainer.style.position = "absolute";
             avgContainer.style.bottom = "60px";
+            avgContainer.style.left = "10px";
             avgContainer.style.padding = "10px";
             avgContainer.style.border = "2px solid #000";
             avgContainer.style.background = "#fff";
-            avgContainer.style.fontSize = "18px";
+            avgContainer.style.borderRadius = "8px";
             avgContainer.style.fontWeight = "bold";
             document.body.appendChild(avgContainer);
         }
@@ -120,25 +136,25 @@ document.addEventListener("DOMContentLoaded", function () {
         avgContainer.style.display = "block";
     }
 
-    function hideAverage() {
-        let avgContainer = document.getElementById("averageContainer");
-        if (avgContainer) {
-            avgContainer.style.display = "none";
-        }
-    }
+    socket.on("errorMessage", (message) => {
+        alert(message);
+    });
 
     socket.on("updateUsers", (users) => {
         updateUserList(users);
     });
 
     let resetCooldown = false;
-
     function clearAll() {
         if (resetCooldown) return;
-
+    
         resetCooldown = true;
         setTimeout(() => (resetCooldown = false), 5000);
+    
+        socket.emit("reset");
+    }    
 
+    socket.on("resetUI", () => {
         selectedCard?.classList.remove("selected");
         selectedCard = null;
         selectedValue = null;
@@ -151,9 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
             avgContainer.innerHTML = "Average Vote: <b>N/A</b>";
             avgContainer.style.display = "none";
         }
-
-        socket.emit("reset"); 
-    }
+    });
 
     document.querySelectorAll(".card").forEach(card => {
         card.addEventListener("click", function () {
@@ -161,5 +175,10 @@ document.addEventListener("DOMContentLoaded", function () {
             if (value === "") value = "Caffe";
             vote(value, this);
         });
+    });
+
+    socket.on("disconnect", () => {
+        localStorage.removeItem("username");
+        window.location.reload();
     });
 });

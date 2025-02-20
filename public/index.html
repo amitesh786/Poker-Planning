@@ -3,47 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Poker Planning</title>
+    <title>Poker Planning</title>
     <link rel="icon" type="image/gif" href="./img/favicon.gif">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="./css/poker.min.css">
+    <link rel="stylesheet" href="./css/poker.css">
 </head>
 
-<body class="container text-center mt-5">
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark d-none" id="navbar" style="background-color: #d7e9ff;">
+        <div class="container-fluid">
+            <a class="navbar-brand" id="navUsername" style="color: black">User</a>
+            <button id="logoutBtn" class="btn btn-primary">Logout</button>
+        </div>
+    </nav>
 
-    <div id="loginSection" class="mt-5">
-        <h1 class="mb-3">Choose your display name</h1>
-        <input type="text" name="username" id="username" class="form-control w-50 mx-auto my-2" placeholder="Enter your display name" required>
-        <button type="submit" id="joinBtn" class="btn btn-primary w-50">Continue to Game</button>
-    </div>
-
-    <div id="centerContainer">
-        <div id="gameSection" class="users-wrapper d-none">
-            <div id="usersList" class="users-container"></div>
-            
-            <div id="startVoting">
-                <button id="startVoting-id" class="btn btn-primary start-voting-btn">Pick your cards!</button>
+    <div class="container text-center">
+        <div id="loginSection" class="login-overlay d-flex align-items-center justify-content-center">
+            <div class="login-box text-center p-4 rounded">
+                <h1 class="mb-3 text-light">Choose your display name</h1>
+                <input type="text" name="username" id="username" class="form-control w-75 mx-auto my-2" placeholder="Enter your display name" required>
+                <button type="submit" id="joinBtn" class="btn btn-primary w-75">Continue to Game</button>
             </div>
         </div>
-    </div>    
 
-    <div id="cardSection" class="d-none">
-        <div class="card-container-bottom">
-            <h6>Choose your card</h6>
-        </div>
-
-        <div class="card-container">
-            <div class="card"><div class="card-body text-center">0</div></div>
-            <div class="card"><div class="card-body text-center">1</div></div>
-            <div class="card"><div class="card-body text-center">2</div></div>
-            <div class="card"><div class="card-body text-center">3</div></div>
-            <div class="card"><div class="card-body text-center">5</div></div>
-            <div class="card"><div class="card-body text-center">8</div></div>
-            <div class="card"><div class="card-body text-center">13</div></div>
-            <div class="card"><div class="card-body text-center">21</div></div>
-            <div class="card"><div class="card-body text-center">?</div></div>
-            <div class="card"><div class="card-body text-center"><i class="fa fa-coffee"></i></div></div>
+        <div id="centerContainer">
+            <div id="gameSection" class="users-wrapper d-none">
+                <div id="usersList" class="users-container"></div>
+                
+                <div id="startVoting">
+                    <button id="startVoting-id" class="btn btn-primary start-voting-btn">Pick your cards!</button>
+                </div>
+            </div>
+        </div>    
+    
+        <div id="cardSection" class="d-none">
+            <div class="card-container-bottom">
+                <h6>Choose your card</h6>
+            </div>
+    
+            <div class="card-container">
+                <div class="card"><div class="card-body text-center">0</div></div>
+                <div class="card"><div class="card-body text-center">1</div></div>
+                <div class="card"><div class="card-body text-center">2</div></div>
+                <div class="card"><div class="card-body text-center">3</div></div>
+                <div class="card"><div class="card-body text-center">5</div></div>
+                <div class="card"><div class="card-body text-center">8</div></div>
+                <div class="card"><div class="card-body text-center">13</div></div>
+                <div class="card"><div class="card-body text-center">21</div></div>
+                <div class="card"><div class="card-body text-center">?</div></div>
+                <div class="card"><div class="card-body text-center"><i class="fa fa-coffee"></i></div></div>
+            </div>
         </div>
     </div>
 

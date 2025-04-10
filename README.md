@@ -3,7 +3,7 @@
 Poker Planning web application developed using JavaScript, HTML, and CSS - Developed by Amitesh Singh.
 
 ## Requirements
-- Node.js and npm installed globally on your machine. [Download Node.js](https://nodejs.org).
+- Node.js and npm installed globally on your machine.
 
 ## Step 1: Install the package
 - Go to the root folder and run: 

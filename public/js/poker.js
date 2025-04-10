@@ -51,33 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
             `;
             usersList.appendChild(userDiv);
         });
-
-        // <i class="fa fa-check vote-icon d-none" data-username="${user.username}"></i>
-        // document.querySelectorAll(".vote-icon").forEach(icon => {
-        //     icon.addEventListener("click", function () {
-        //         if (this.dataset.username === currentUser) {
-        //             changeVote();
-        //         }
-        //     });
-        // });
     }
-
-    // function changeVote() {
-    //     if (!selectedCard) return;
-    
-    //     selectedCard.classList.remove("selected");
-    //     selectedCard = null;
-    //     selectedValue = null;
-        
-    //     startVotingContainer.innerHTML = `<div class="pick-text">Pick your cards!</div>`;
-    //     socket.emit("vote", "?");
-    
-    //     document.querySelectorAll(".vote-icon").forEach(icon => {
-    //         if (icon.dataset.username === currentUser) {
-    //             icon.classList.add("d-none");
-    //         }
-    //     });
-    // }
 
     socket.on("usernameTaken", (username) => {
         alert(`The username "${username}" is already taken. Please choose another.`);
